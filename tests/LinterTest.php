@@ -26,4 +26,3 @@ class LinterTest extends TestCase
         $this->assertFalse($this->linter->lint($code));
     }
 }
-
