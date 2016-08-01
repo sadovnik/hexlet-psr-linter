@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+list ($script, $file) = $argv;
+
+use PsrLinter\Linter;
+
+$linter = Linter::factory();
+$code = file_get_contents($file);
+if ($linter->lint($code)) {
+    echo 'Code is valid.';
+} else {
+    echo 'Code is not valid.';
+}
+
+echo PHP_EOL;
+

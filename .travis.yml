@@ -1,0 +1,15 @@
+language: php
+php:
+  - '7.0'
+
+install:
+  - composer self-update
+  - make install
+
+script: make test lint
+
+addons:
+  - code_climate
+
+after_script:
+  - make send-coverage
