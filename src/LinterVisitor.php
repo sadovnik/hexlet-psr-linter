@@ -8,7 +8,10 @@ use PsrLinter\Checkers\CamelCaseChecker;
 
 class LinterVisitor extends NodeVisitorAbstract
 {
-    private $errors;
+    /**
+     * @var array
+     */
+    private $errors = [];
 
     /**
      * @return bool
@@ -40,13 +43,15 @@ class LinterVisitor extends NodeVisitorAbstract
             $checkers
         );
 
-        $this->errors = array_reduce(
+        $errors = array_reduce(
             $checkers,
-            function ($acc, $checker) use ($node) {
+            function ($acc, $checker) {
                 $errors = $checker->getErrors();
                 return array_merge($acc, $errors);
             },
             []
         );
+
+        $this->errors = array_merge($this->errors, $errors);
     }
 }
