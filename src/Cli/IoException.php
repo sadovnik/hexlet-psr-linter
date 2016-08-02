@@ -2,6 +2,8 @@
 
 namespace PsrLinter\Cli;
 
-class IoException extends \Exception
+use PsrLinter\PsrLinterException;
+
+class IoException extends PsrLinterException
 {
 }
