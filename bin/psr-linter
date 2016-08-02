@@ -6,13 +6,18 @@ require_once __DIR__ . '/../vendor/autoload.php';
 list ($script, $file) = $argv;
 
 use PsrLinter\Linter;
+use PsrLinter\Cli\Io;
+use PsrLinter\Cli\ErrorPrinter;
 
-$linter = Linter::factory();
-$code = file_get_contents($file);
-if ($linter->lint($code)) {
-    echo 'Code is valid.';
+$linter = new Linter;
+$code = Io::read($file);
+$result = $linter->lint($code);
+
+if ($result === true) {
+    echo 'Code is valid!';
 } else {
-    echo 'Code is not valid.';
+    echo '🐛  Code is not valid. Errors: ' . PHP_EOL;
+    ErrorPrinter::print($result);
 }
 
 echo PHP_EOL;
