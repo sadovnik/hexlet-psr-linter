@@ -3,26 +3,29 @@
 namespace PsrLinter\Tests;
 
 use PsrLinter\Linter;
-use PHPUnit\Framework\TestCase;
 
-class LinterTest extends TestCase
+class LinterTest extends BaseTestCase
 {
     protected $linter;
 
     public function setUp()
     {
-        $this->linter = Linter::factory();
+        $this->linter = new Linter;
     }
 
     public function testSuccess()
     {
-        $code = '<?php $foo = "bar";';
+        $code = self::getFixture('linter-test-success');
         $this->assertTrue($this->linter->lint($code));
     }
 
     public function testFail()
     {
-        $code = '<?php $foo "bar";';
-        $this->assertFalse($this->linter->lint($code));
+        $code = self::getFixture('linter-test-fail');
+        $expectedErrors = [
+            [ 3, 'Wrong function name.', 'Function names must be declared as camelCase.' ]
+        ];
+        $errors = $this->linter->lint($code);
+        $this->assertEquals($expectedErrors, $errors);
     }
 }
