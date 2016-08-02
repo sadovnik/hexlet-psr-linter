@@ -30,6 +30,7 @@ class CamelCaseChecker implements CheckerInterface
                     $functionName = $node->var->name;
                     break;
                 }
+                // fall-through if assign is not a closure
 
             default:
                 return;

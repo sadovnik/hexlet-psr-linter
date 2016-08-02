@@ -25,4 +25,3 @@ class Io
         return file_get_contents($path);
     }
 }
-

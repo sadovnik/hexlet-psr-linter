@@ -34,7 +34,7 @@ class LinterVisitor extends NodeVisitorAbstract
         $checkers = [ new CamelCaseChecker ];
 
         array_map(
-            function($checker) use ($node) {
+            function ($checker) use ($node) {
                 $checker->check($node);
             },
             $checkers

@@ -4,19 +4,11 @@ namespace PsrLinter;
 
 use PhpParser\Error as ErrorException;
 use PhpParser\ParserFactory;
-
 use PhpParser\NodeTraverser;
 use PhpParser\PrettyPrinter;
 
-
 class Linter
 {
-    public static function factory(array $config = []) : Linter
-    {
-        // TODO: some serious bussiness here
-        return new self;
-    }
-
     /**
      * @param string $code
      * @return mixed true – no linting error were found
@@ -27,6 +19,7 @@ class Linter
     {
         $parserFactory = new ParserFactory;
         $parser = $parserFactory->create(ParserFactory::PREFER_PHP7);
+
         $traverser = new NodeTraverser;
         $linterVisitor = new LinterVisitor;
         $traverser->addVisitor($linterVisitor);
