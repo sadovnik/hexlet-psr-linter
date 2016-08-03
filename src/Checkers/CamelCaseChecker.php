@@ -17,17 +17,24 @@ class CamelCaseChecker implements CheckerInterface
      */
     public function check(Node $node)
     {
-        $functionName = null;
+        $type = null;
+        $name = null;
 
         switch (true) {
             case $node instanceof Node\Stmt\Function_:
+                $type = 'function';
+                $name = $node->name;
+                break;
+
             case $node instanceof Node\Stmt\ClassMethod:
-                $functionName = $node->name;
+                $type = 'method';
+                $name = $node->name;
                 break;
 
             case $node instanceof Node\Expr\Assign:
                 if ($node->expr instanceof Node\Expr\Closure) {
-                    $functionName = $node->var->name;
+                    $type = 'callable';
+                    $name = $node->var->name;
                     break;
                 }
                 // fall-through if assign is not a closure
@@ -36,15 +43,11 @@ class CamelCaseChecker implements CheckerInterface
                 return;
         }
 
-        if (!self::isCamelCase($functionName)) {
-            $title = 'Wrong function name.';
-            $description = 'Function names must be declared as camelCase.';
-            $error = [
-                $node->getLine(),
-                $title,
-                $description
-            ];
-            array_push($this->errors, $error);
+        if (!self::isCamelCase($name)) {
+            $line = $node->getLine();
+            $title = "Wrong $type name.";
+            $description = ucfirst($type) . ' names must be declared as camelCase.';
+            array_push($this->errors, compact('line', 'title', 'description'));
         }
     }
 
