@@ -46,7 +46,7 @@ class CamelCaseChecker implements CheckerInterface
         if (!self::isCamelCase($name)) {
             $line = $node->getLine();
             $title = "Wrong $type name.";
-            $description = ucfirst($type) . ' names must be declared as camelCase.';
+            $description = ucfirst($type) . ' names must be declared in camelCase.';
             array_push($this->errors, compact('line', 'title', 'description'));
         }
     }

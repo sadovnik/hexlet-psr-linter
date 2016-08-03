@@ -26,7 +26,7 @@ class LinterTest extends BaseTestCase
             [
                 'line' => 3,
                 'title' => 'Wrong function name.',
-                'description' => 'Function names must be declared as camelCase.'
+                'description' => 'Function names must be declared in camelCase.'
             ]
         ];
         $errors = $this->linter->lint($code);

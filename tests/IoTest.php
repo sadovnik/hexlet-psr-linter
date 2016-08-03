@@ -1,6 +1,6 @@
 <?php
 
-namespace Converter\Tests;
+namespace PsrLinter\Tests;
 
 use PHPUnit\Framework\TestCase;
 
