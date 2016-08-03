@@ -16,14 +16,18 @@ class LinterTest extends BaseTestCase
     public function testSuccess()
     {
         $code = self::getFixture('linter-test-success');
-        $this->assertTrue($this->linter->lint($code));
+        $this->assertEmpty($this->linter->lint($code));
     }
 
     public function testFail()
     {
         $code = self::getFixture('linter-test-fail');
         $expectedErrors = [
-            [ 3, 'Wrong function name.', 'Function names must be declared as camelCase.' ]
+            [
+                'line' => 3,
+                'title' => 'Wrong function name.',
+                'description' => 'Function names must be declared as camelCase.'
+            ]
         ];
         $errors = $this->linter->lint($code);
         $this->assertEquals($expectedErrors, $errors);

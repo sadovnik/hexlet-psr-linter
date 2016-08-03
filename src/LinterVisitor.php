@@ -4,7 +4,6 @@ namespace PsrLinter;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
-use PsrLinter\Checkers\CamelCaseChecker;
 
 class LinterVisitor extends NodeVisitorAbstract
 {
@@ -12,6 +11,19 @@ class LinterVisitor extends NodeVisitorAbstract
      * @var array
      */
     private $errors = [];
+
+    /**
+     * @var array
+     */
+    private $checkers = [];
+
+    /**
+     * @param array $checkers
+     */
+    public function __construct(array $checkers = [])
+    {
+        $this->checkers = $checkers;
+    }
 
     /**
      * @return bool
@@ -34,17 +46,15 @@ class LinterVisitor extends NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
-        $checkers = [ new CamelCaseChecker ];
-
         array_map(
             function ($checker) use ($node) {
                 $checker->check($node);
             },
-            $checkers
+            $this->checkers
         );
 
         $errors = array_reduce(
-            $checkers,
+            $this->checkers,
             function ($acc, $checker) {
                 $errors = $checker->getErrors();
                 return array_merge($acc, $errors);
