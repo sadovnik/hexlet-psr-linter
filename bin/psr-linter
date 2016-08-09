@@ -1,19 +1,48 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace PsrLinter;
+
+$autoloadPaths = [
+    __DIR__ . '/../vendor/autoload.php', // local dev
+    __DIR__ . '/../../../autoload.php' // composer global
+];
+
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        break;
+    }
+}
+
+use PsrLinter\Linter;
+use PsrLinter\Cli\Io;
+use PsrLinter\Cli\ReportGenerator;
+use PhpParser\Error;
+
+if (sizeof($argv) < 2) {
+    echo 'You must specify path to a php file. Example:' . PHP_EOL;
+    echo '    psr-linter src/Models/UserModel.php' . PHP_EOL;
+    exit(1);
+}
 
 list ($script, $file) = $argv;
 
-use PsrLinter\Linter;
+$linter = new Linter;
+$code = Io::read($file);
 
-$linter = Linter::factory();
-$code = file_get_contents($file);
-if ($linter->lint($code)) {
-    echo 'Code is valid.';
+try {
+    $errors = $linter->lint($code);
+} catch (Error $e) {
+    echo 'Unable to parse the sourcecode. Message: ' . $e->getMessage() . PHP_EOL;
+    exit(1);
+}
+
+if (empty($errors)) {
+    echo 'Code is valid!';
 } else {
-    echo 'Code is not valid.';
+    echo '🐛  Code is not valid. Errors: ' . PHP_EOL;
+    echo ReportGenerator::generate($errors);
 }
 
 echo PHP_EOL;
-

@@ -2,29 +2,56 @@
 
 namespace PsrLinter;
 
-use PhpParser\Error;
+use PsrLinter\Checkers\CamelCaseChecker;
 use PhpParser\ParserFactory;
+use PhpParser\NodeTraverser;
+use PhpParser\PrettyPrinter;
 
 class Linter
 {
-    public static function factory(array $config = []) : Linter
+    /**
+     * @var NodeTraverser
+     */
+    private $traverser;
+
+    /**
+     * @var PhpParser\Parser
+     */
+    private $parser;
+
+    /**
+     * @var LinterVisitor
+     */
+    private $linterVisitor;
+
+    public function __construct()
     {
-        // TODO: some serious bussiness here
-        return new self;
+        $parserFactory = new ParserFactory;
+        $this->parser = $parserFactory->create(ParserFactory::PREFER_PHP7);
+        $this->traverser = new NodeTraverser;
+        $this->linterVisitor = new LinterVisitor(static::getCoreCheckers());
+        $this->traverser->addVisitor($this->linterVisitor);
+    }
+
+    /**
+     * Returns default checkers
+     * @return array
+     */
+    protected static function getCoreCheckers() : array
+    {
+        return [
+            new CamelCaseChecker
+        ];
     }
 
     /**
      * @param string $code
-     * @return boolean is code valid
+     * @return array list of linting errors
      */
-    public function lint(string $code) : bool
+    public function lint(string $code)
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
-        try {
-            $nodes = $parser->parse($code);
-            return true;
-        } catch (Error $e) {
-            return false;
-        }
+        $ast = $this->parser->parse($code);
+        $this->traverser->traverse($ast);
+        return $this->linterVisitor->getErrors();
     }
 }
