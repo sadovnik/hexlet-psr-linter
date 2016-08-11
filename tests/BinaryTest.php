@@ -45,6 +45,6 @@ class BinaryTest extends TestCase
         $command = self::BIN_PATH;
         exec($command, $output, $exitCode);
         $this->assertEquals(1, $exitCode);
-        $this->assertContains('You must specify path to a php file.', $output[0]);
+        $this->assertContains('Usage:', $output[0]);
     }
 }

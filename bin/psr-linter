@@ -15,34 +15,21 @@ foreach ($autoloadPaths as $path) {
     }
 }
 
-use PsrLinter\Linter;
-use PsrLinter\Cli\Io;
-use PsrLinter\Cli\ReportGenerator;
-use PhpParser\Error;
+use PsrLinter\Cli\App;
+use Docopt;
 
-if (sizeof($argv) < 2) {
-    echo 'You must specify path to a php file. Example:' . PHP_EOL;
-    echo '    psr-linter src/Models/UserModel.php' . PHP_EOL;
-    exit(1);
-}
+$doc = <<<DOC
+PSR linter.
 
-list ($script, $file) = $argv;
+Usage:
+    psr-linter <path>
+    psr-linter (-h | --help)
+    psr-linter --version
 
-$linter = new Linter;
-$code = Io::read($file);
+Options:
+    --fix    try to fix automatically
+DOC;
 
-try {
-    $errors = $linter->lint($code);
-} catch (Error $e) {
-    echo 'Unable to parse the sourcecode. Message: ' . $e->getMessage() . PHP_EOL;
-    exit(1);
-}
-
-if (empty($errors)) {
-    echo 'Code is valid!';
-} else {
-    echo '🐛  Code is not valid. Errors: ' . PHP_EOL;
-    echo ReportGenerator::generate($errors);
-}
-
-echo PHP_EOL;
+$args = Docopt::handle($doc, [ 'version' => 'PSR linter 0.1' ]);
+$app = new App($args);
+$app->run();
