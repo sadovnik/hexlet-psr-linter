@@ -45,4 +45,3 @@ class App
         exit($code);
     }
 }
-
