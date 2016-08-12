@@ -10,11 +10,6 @@ class LinterVisitor extends NodeVisitorAbstract
     /**
      * @var array
      */
-    private $errors = [];
-
-    /**
-     * @var array
-     */
     private $checkers = [];
 
     /**
@@ -38,22 +33,7 @@ class LinterVisitor extends NodeVisitorAbstract
      */
     public function getErrors() : array
     {
-        return $this->errors;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function leaveNode(Node $node)
-    {
-        array_map(
-            function ($checker) use ($node) {
-                $checker->check($node);
-            },
-            $this->checkers
-        );
-
-        $errors = array_reduce(
+        return array_reduce(
             $this->checkers,
             function ($acc, $checker) {
                 $errors = $checker->getErrors();
@@ -61,7 +41,18 @@ class LinterVisitor extends NodeVisitorAbstract
             },
             []
         );
+    }
 
-        $this->errors = array_merge($this->errors, $errors);
+    /**
+     * @inheritdoc
+     */
+    public function leaveNode(Node $node)
+    {
+        array_walk(
+            $this->checkers,
+            function ($checker) use ($node) {
+                $checker->check($node);
+            }
+        );
     }
 }
