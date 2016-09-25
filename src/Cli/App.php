@@ -76,7 +76,7 @@ class App
 
         $report = array_reduce(
             array_keys($fileErrors),
-            function($acc, $file) use ($fileErrors) {
+            function ($acc, $file) use ($fileErrors) {
                 $report = ReportGenerator::generate($fileErrors[$file]);
 
                 $newAcc  = $acc . PHP_EOL;
