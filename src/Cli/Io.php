@@ -24,4 +24,20 @@ class Io
 
         return file_get_contents($path);
     }
+
+    /**
+     * @return bool
+     */
+    public static function isDir($path) : bool
+    {
+        if (!file_exists($path)) {
+            throw new IoException("File or directory not found: $path");
+        }
+
+        if (!is_readable($path)) {
+            throw new IoException('Permission denied');
+        }
+
+        return is_dir($path);
+    }
 }
