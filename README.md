@@ -22,9 +22,9 @@ composer require "sadovnik/hexlet-psr-linter"
 ## Roadmap
 - [x] Initiate boilerplate
 - [x] Function name checker
-- [ ] Directory support
+- [x] Directory support
 - [ ] Variable name checker
-- [ ] «Either side-effects or definitions» checker 
+- [ ] «Either side-effects or definitions» checker
 - [ ] Autofix using `--fix` flag
 - [ ] JSON/YML output
 - [ ] User checkers
