@@ -22,6 +22,7 @@
         }
     },
     "require": {
-        "docopt/docopt": "^1.0"
+        "docopt/docopt": "^1.0",
+        "sadovnik/fs": "^1.0"
     }
 }

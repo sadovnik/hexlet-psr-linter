@@ -3,9 +3,9 @@
 namespace PsrLinter\Cli;
 
 use PsrLinter\Linter;
-use PsrLinter\Cli\Io;
 use PsrLinter\Cli\ReportGenerator;
 use PhpParser\Error;
+use Fs\Fs;
 
 class App
 {
@@ -20,7 +20,7 @@ class App
     {
         $path = $this->args['<path>'];
         try {
-            if (Io::isDir($path)) {
+            if (Fs::isDir($path)) {
                 $this->lintDirectory($path);
             } else {
                 $this->lintFile($path);
@@ -35,7 +35,7 @@ class App
 
     private function lintFile($file)
     {
-        $code = Io::read($file);
+        $code = Fs::read($file);
 
         $linter = new Linter;
         $errors = $linter->lint($code);
@@ -59,7 +59,7 @@ class App
         foreach ($regexIterator as $file) {
             $linter = new Linter;
             $path = $file->getPathname();
-            $code = Io::read($path);
+            $code = Fs::read($path);
             try {
                 $errors = $linter->lint($code);
             } catch (Error $e) {
