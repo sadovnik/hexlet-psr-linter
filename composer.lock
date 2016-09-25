@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9d0551541542c8a267c1d122d17ebc41",
-    "content-hash": "c719fa27acb8c26b0170e6f841f620e6",
+    "hash": "b7ae95543f884fce508a956052022771",
+    "content-hash": "d9bc90b434206985308f517a4376ef03",
     "packages": [
         {
             "name": "docopt/docopt",
@@ -52,6 +52,45 @@
                 "docs"
             ],
             "time": "2015-10-30 03:21:23"
+        },
+        {
+            "name": "sadovnik/fs",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sadovnik/fs.git",
+                "reference": "a053bb2e0de05a00c365130a393670ae5c74b23d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sadovnik/fs/zipball/a053bb2e0de05a00c365130a393670ae5c74b23d",
+                "reference": "a053bb2e0de05a00c365130a393670ae5c74b23d",
+                "shasum": ""
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "~0.3",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "~5.4",
+                "squizlabs/php_codesniffer": "~2.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cyril",
+                    "email": "cyril.sadovnik@gmail.com"
+                }
+            ],
+            "description": "A simple filesystem abstraction",
+            "time": "2016-09-25 16:53:41"
         }
     ],
     "packages-dev": [
