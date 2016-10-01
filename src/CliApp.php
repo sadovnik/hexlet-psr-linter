@@ -225,9 +225,9 @@ class CliApp
     public function printUnableToParseMessage($file, $message)
     {
         $this->cli
-            ->out($file)->inline('       ')->red()
-            ->out('Unable to parse')->white()->inline('       ')
-            ->out($message)
-            ->br();
+            ->out($file)->red()
+            ->inline(' unable to parse ')->white()
+            ->inline($message)
+            ->br()->br();
     }
 }
