@@ -12,7 +12,10 @@
         "psr-4": {
             "PsrLinter\\": "src/",
             "PsrLinter\\Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "src/Rules/camelCase.php"
+        ]
     },
     "require": {
         "docopt/docopt": "^1.0",
