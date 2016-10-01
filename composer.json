@@ -2,13 +2,6 @@
     "name": "sadovnik/hexlet-psr-linter",
     "bin": [ "bin/psr-linter" ],
     "type": "library",
-    "require-dev": {
-        "phpunit/phpunit": "~5.4",
-        "squizlabs/php_codesniffer": "~2.6",
-        "codeclimate/php-test-reporter": "~0.3",
-        "nikic/php-parser": "~2.1",
-        "mikey179/vfsStream": "^1.6"
-    },
     "authors": [
         {
             "name": "Cyril Sadovnik",
@@ -23,6 +16,15 @@
     },
     "require": {
         "docopt/docopt": "^1.0",
-        "sadovnik/fs": "^1.0"
+        "sadovnik/fs": "^1.0",
+        "league/climate": "^3.2",
+        "lstrojny/functional-php": "^1.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.4",
+        "squizlabs/php_codesniffer": "~2.6",
+        "codeclimate/php-test-reporter": "~0.3",
+        "nikic/php-parser": "~2.1",
+        "mikey179/vfsStream": "^1.6"
     }
 }
