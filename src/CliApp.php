@@ -17,7 +17,7 @@ use PsrLinter\Rules\EitherDeclarationsOrSideEffectsRule;
 
 use PhpParser\Error;
 use PhpParser\NodeTraverser;
-use PhpParser\PrettyPrinter\Standard;
+use PhpParser\PrettyPrinter;
 
 use League\CLImate\CLImate;
 
@@ -25,11 +25,6 @@ use Fs\Fs;
 
 class CliApp
 {
-    /**
-     * @var array
-     */
-    private $args;
-
     /**
      * @var League\CLImate\CLImate
      */
@@ -43,9 +38,8 @@ class CliApp
     /**
      * @param array $args
      */
-    public function __construct($args)
+    public function __construct()
     {
-        $this->args = $args;
         $this->cli = new CLImate;
     }
 
@@ -55,7 +49,7 @@ class CliApp
     public function getPrinter()
     {
         if ($this->printer === null) {
-            $this->printer = new Standard;
+            $this->printer = new PrettyPrinter\Standard;
         }
         return $this->printer;
     }
@@ -75,11 +69,11 @@ class CliApp
     /**
      * @return integer exit code
      */
-    public function run()
+    public function run($args)
     {
-        $path = $this->args['<path>'];
-        $debug = $this->args['--debug'];
-        $fix = $this->args['--fix'];
+        $path = $args['<path>'];
+        $debug = $args['--debug'];
+        $fix = $args['--fix'];
 
         $hasErrors = Fs::isDir($path)
             ? $this->lintDirectory($path, $fix, $debug)
