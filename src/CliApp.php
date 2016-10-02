@@ -101,26 +101,28 @@ class CliApp
         $code = Fs::read($file);
 
         try {
-            $results = $linter->lint($code);
+            $resultCollection = $linter->lint($code);
         } catch (Error $e) {
             $this->printUnableToParseMessage($file, $e->getMessage());
             return true;
         }
 
-        if (empty($results)) {
+        if ($resultCollection->isEmpty()) {
             return false;
         }
 
         $this->cli->gray($file);
 
-        $errorsOccured = $this->processResults($results);
+        $resultCollection->traverse(function ($result) {
+            $this->printResult($result);
+        });
 
         if (!$debug && $fix) {
             $code = $this->generatePhpCode($linter->getFixedAst());
             Fs::write($file, $code);
         }
 
-        return $errorsOccured;
+        return $resultCollection->hasErrors();
     }
 
     /**
@@ -158,69 +160,55 @@ class CliApp
     }
 
     /**
-     * @param AbstractRuleResult[] $results
-     * @return bool errors occured
+     * @param AbstractRuleResult $result
      */
-    private function processResults($results)
+    private function printResult($result)
     {
-        $errorsOccured = array_reduce(
-            $results,
-            function ($errorsOccured, $result) {
-                $line = $result->getNode()
-                    ? sprintf('%6s', $result->getNode()->getLine())
-                    : '';
+        $lineCount = $result->getNode() ? $result->getNode()->getLine() : '';
+        $line = sprintf('%6s', $lineCount);
 
-                if ($result instanceof AbstractFailRuleResult) {
-                    $this->cli->inline($line . ' ');
+        if ($result instanceof AbstractFailRuleResult) {
+            $this->cli->inline($line . ' ');
 
-                    if ($result instanceof WarningRuleResult) {
-                        $this->cli->yellow()->inline('warning')->white();
-                    } else {
-                        $this->cli->red()->inline('error')->white();
-                    }
+            if ($result instanceof WarningRuleResult) {
+                $this->cli->yellow()->inline('warning')->white();
+            } else {
+                $this->cli->red()->inline('error')->white();
+            }
 
-                    $this->cli
-                        ->inline(' ')
-                        ->inline($result->getTitle())
-                        ->inline('    ')
-                        ->inline($result->getDescription())
-                        ->br()
-                        ->br();
+            $this->cli
+                ->inline(' ')
+                ->inline($result->getTitle())
+                ->inline('    ')
+                ->inline($result->getDescription())
+                ->br()->br();
+        }
 
-                    return true;
-                }
+        if ($result instanceof FixedRuleResult) {
+            $this->cli
+                ->inline($line . ' ')->green()
+                ->inline('fixed')->white()
+                ->inline(' ' . $result->getBeforeFix() . ' → ' . $result->getAfterFix())
+                ->br()->br();
+        }
 
-                if ($result instanceof FixedRuleResult) {
-                    $this->cli
-                        ->inline($line . ' ')->green()
-                        ->inline('fixed')->white()
-                        ->inline(' ' . $result->getBeforeFix() . ' → ' . $result->getAfterFix())
-                        ->br()
-                        ->br();
-                }
-
-                if ($result instanceof OkRuleResult) {
-                    $this->cli
-                        ->gray()->inline('ok: ')->white($result->getRule())
-                        ->br();
-                }
-
-                return $errorsOccured;
-            },
-            false
-        );
-
-        return $errorsOccured;
+        if ($result instanceof OkRuleResult) {
+            $this->cli
+                ->gray()->inline('ok: ')->white($result->getRule())
+                ->br();
+        }
     }
 
     /**
      * @param string $file
+     * @param string $message
      */
     public function printUnableToParseMessage($file, $message)
     {
         $this->cli
-            ->out($file)->red()
-            ->inline(' unable to parse ')->white()
+            ->out($file)
+            ->inline('       ')->red()
+            ->inline('unable to parse ')->white()
             ->inline($message)
             ->br()->br();
     }

@@ -13,6 +13,7 @@ use PsrLinter\RuleResults\AbstractRuleResult;
 use PsrLinter\RuleResults\AbstractFailRuleResult;
 use PsrLinter\RuleResults\OkRuleResult;
 use PsrLinter\RuleResults\FixedRuleResult;
+use PsrLinter\RuleResults\ResultCollection;
 
 class LinterVisitor extends NodeVisitorAbstract
 {
@@ -37,20 +38,21 @@ class LinterVisitor extends NodeVisitorAbstract
     private $debug;
 
     /**
-     * @var array
+     * @var ResultCollection
      */
-    private $log = [];
+    private $collection;
 
     /**
      * @param array $rules
      * @param bool $fix whether try to fix nodes or not
-     * @param bool $debug whether log verbose or not
+     * @param bool $debug whether collect verbose or not
      */
     public function __construct($rules, $fix, $debug)
     {
         $this->fix = $fix;
         $this->debug = $debug;
         $this->rules = $rules;
+        $this->collection = new ResultCollection;
     }
 
     /**
@@ -103,7 +105,7 @@ class LinterVisitor extends NodeVisitorAbstract
 
             if ($result instanceof OkRuleResult) {
                 if ($this->debug) {
-                    $this->log($result);
+                    $this->collect($result);
                 }
                 continue;
             }
@@ -116,10 +118,12 @@ class LinterVisitor extends NodeVisitorAbstract
                 $fixResult = $rule->fix($node);
 
                 if ($fixResult instanceof FixedRuleResult) {
-                    $this->log($fixResult);
+                    $this->collect($fixResult);
                     return $fixResult->getFixedNode();
                 }
             }
+
+            $this->collect($result);
         }
     }
 
@@ -143,7 +147,7 @@ class LinterVisitor extends NodeVisitorAbstract
                     $result instanceof AbstractFailRuleResult ||
                     ( $result instanceof OkRuleResult && $this->debug )
                 ) {
-                    $this->log($result);
+                    $this->collect($result);
                 }
             }
         );
@@ -152,16 +156,16 @@ class LinterVisitor extends NodeVisitorAbstract
     /**
      * @param AbstractRuleResult $result
      */
-    private function log(AbstractRuleResult $result)
+    private function collect(AbstractRuleResult $result)
     {
-        $this->log []= $result;
+        $this->collection->add($result);
     }
 
     /**
      * @return array
      */
-    public function getLog()
+    public function getCollection()
     {
-        return $this->log;
+        return $this->collection;
     }
 }

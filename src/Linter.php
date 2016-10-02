@@ -3,6 +3,8 @@
 namespace PsrLinter;
 
 use PsrLinter\Checkers\CamelCaseChecker;
+use PsrLinter\RuleResults\ResultCollection;
+
 use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
 use PhpParser\PrettyPrinter;
@@ -52,13 +54,13 @@ class Linter
      * @param string $code
      * @param bool $fix
      *
-     * @return AbstractRuleResult[] list of linting errors
+     * @return ResultCollection of linting errors
      */
-    public function lint(string $code) : array
+    public function lint(string $code) : ResultCollection
     {
         $ast = $this->parser->parse($code);
         $this->fixedAst = $this->traverser->traverse($ast);
-        return $this->linterVisitor->getLog();
+        return $this->linterVisitor->getCollection();
     }
 
     /**
