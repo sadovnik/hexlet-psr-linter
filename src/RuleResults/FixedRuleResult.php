@@ -58,8 +58,8 @@ class FixedRuleResult extends AbstractRuleResult
      *  * array:     The return value is merged into the parent array (at the position of the $node)
      *  * otherwise: $node is set to the return value
      *
-     * @param string $rule
-     * @param Node $node the previos node
+     * @param string                 $rule
+     * @param Node                   $node      the previos node
      */
     public function __construct($afterFix, $beforeFix, $fixedNode, $rule, Node $node = null)
     {

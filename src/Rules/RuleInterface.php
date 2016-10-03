@@ -24,7 +24,7 @@ interface RuleInterface
     /**
      * Verifies node.
      *
-     * @param Node $node
+     * @param  Node $node
      * @return bool false if invalid
      */
     public function verify(Node $node);

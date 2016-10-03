@@ -56,6 +56,7 @@ class CliApp
 
     /**
      * Returns default rules
+     *
      * @return AbstractRule[]
      */
     public static function getCoreRules()
@@ -90,8 +91,8 @@ class CliApp
 
     /**
      * @param string $file
-     * @param bool $fix
-     * @param bool $debug
+     * @param bool   $fix
+     * @param bool   $debug
      *
      * @return bool true if has errors
      */
@@ -127,8 +128,8 @@ class CliApp
 
     /**
      * @param string $directory
-     * @param bool $fix
-     * @param bool $debug
+     * @param bool   $fix
+     * @param bool   $debug
      *
      * @return bool true if has errors
      */

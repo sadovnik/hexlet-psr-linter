@@ -15,7 +15,7 @@ interface FixableRuleInterface
     /**
      * Fixes given node
      *
-     * @param Node $node
+     * @param  Node $node
      * @return Node|false
      */
     public function fix(Node $node);

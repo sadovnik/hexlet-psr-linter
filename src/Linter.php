@@ -38,8 +38,8 @@ class Linter
 
     /**
      * @param AbstractRule[] $rules
-     * @param bool $fix
-     * @param book $debug
+     * @param bool           $fix
+     * @param book           $debug
      */
     public function __construct($rules = [], $fix = false, $debug = false)
     {
@@ -52,7 +52,7 @@ class Linter
 
     /**
      * @param string $code
-     * @param bool $fix
+     * @param bool   $fix
      *
      * @return ResultCollection of linting errors
      */

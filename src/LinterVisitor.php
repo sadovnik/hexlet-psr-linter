@@ -20,7 +20,7 @@ class LinterVisitor extends NodeVisitorAbstract
     /**
      * @var array
      */
-    private $nodeTypeToRulesMap = null;
+    private $nodeTypeToRulesMap = [];
 
     /**
      * @var Node
@@ -44,8 +44,8 @@ class LinterVisitor extends NodeVisitorAbstract
 
     /**
      * @param array $rules
-     * @param bool $fix whether try to fix nodes or not
-     * @param bool $debug whether collect verbose or not
+     * @param bool  $fix   whether try to fix nodes or not
+     * @param bool  $debug whether collect verbose or not
      */
     public function __construct($rules, $fix, $debug)
     {
@@ -110,10 +110,9 @@ class LinterVisitor extends NodeVisitorAbstract
                 continue;
             }
 
-            if (
-                $this->fix &&
-                $result instanceof WarningRuleResult &&
-                $rule instanceof FixableRuleInterface
+            if ($this->fix
+                && $result instanceof WarningRuleResult
+                && $rule instanceof FixableRuleInterface
             ) {
                 $fixResult = $rule->fix($node);
 
@@ -142,10 +141,9 @@ class LinterVisitor extends NodeVisitorAbstract
         array_walk(
             $fileWideRules,
             function ($rule) {
-                $result = $rule->finally();
-                if (
-                    $result instanceof AbstractFailRuleResult ||
-                    ( $result instanceof OkRuleResult && $this->debug )
+                $result = $rule->conclude();
+                if ($result instanceof AbstractFailRuleResult
+                    || $result instanceof OkRuleResult && $this->debug
                 ) {
                     $this->collect($result);
                 }

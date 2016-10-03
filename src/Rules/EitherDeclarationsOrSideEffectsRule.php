@@ -6,7 +6,14 @@ use PhpParser\Node;
 
 class EitherDeclarationsOrSideEffectsRule extends AbstractRule implements RuleInterface, FilewideRuleInterface
 {
+    /**
+     * @var bool
+     */
     private $hasSideEffects = false;
+
+    /**
+     * @var bool
+     */
     private $hasDeclarations = false;
 
     /**
@@ -20,6 +27,9 @@ class EitherDeclarationsOrSideEffectsRule extends AbstractRule implements RuleIn
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function verify(Node $node)
     {
         $isStatement = $node instanceof Node\Stmt;

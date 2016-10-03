@@ -23,7 +23,7 @@ abstract class AbstractFailRuleResult extends AbstractRuleResult
      * @param string $title
      * @param string $description
      * @param string $rule
-     * @param Node $node
+     * @param Node   $node
      */
     public function __construct($title, $description, $rule, Node $node = null)
     {

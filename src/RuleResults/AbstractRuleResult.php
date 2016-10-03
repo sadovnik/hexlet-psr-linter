@@ -21,7 +21,7 @@ abstract class AbstractRuleResult
 
     /**
      * @param string $rule
-     * @param Node $node
+     * @param Node   $node
      */
     public function __construct($rule, Node $node = null)
     {

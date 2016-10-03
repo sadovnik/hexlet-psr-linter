@@ -23,9 +23,9 @@ abstract class AbstractRule
     }
 
     /**
-     * @param string $title
+     * @param string      $title
      * @param string|null $description
-     * @param Node|null $node current node
+     * @param Node|null   $node        current node
      *
      * @return WarningRuleResult
      */
@@ -35,9 +35,9 @@ abstract class AbstractRule
     }
 
     /**
-     * @param string $title
+     * @param string      $title
      * @param string|null $description
-     * @param Node|null $node current node
+     * @param Node|null   $node        current node
      *
      * @return ErrorRuleResult
      */
@@ -47,10 +47,10 @@ abstract class AbstractRule
     }
 
     /**
-     * @param string $afterFix a fixed value. Null means node was deleted
-     * @param string $beforeFix a value of an attribute to be fixed
-     * @param null|Node|false|Node[] $newNode replacement for current node
-     * @param Node|null $node current node
+     * @param string                 $afterFix  a fixed value. Null means node was deleted
+     * @param string                 $beforeFix a value of an attribute to be fixed
+     * @param null|Node|false|Node[] $newNode   replacement for current node
+     * @param Node|null              $node      current node
      *
      * @return FixedRuleResult
      */

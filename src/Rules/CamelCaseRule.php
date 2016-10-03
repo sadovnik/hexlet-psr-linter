@@ -59,7 +59,10 @@ class CamelCaseRule extends AbstractRule implements RuleInterface, FixableRuleIn
 
     /**
      * Checks whether $name is a magic method or not
+     *
      * @see http://php.net/manual/en/language.oop5.magic.php
+     * @param string $method
+     * @return bool
      */
     private static function isMagic($method)
     {
