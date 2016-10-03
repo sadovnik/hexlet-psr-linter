@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use function PsrLinter\Rules\isCamelCase;
 use function PsrLinter\Rules\convertToCamelCase;
 
-class camelCaseTest extends TestCase
+class CamelCaseHelpersTest extends TestCase
 {
     /**
      * @dataProvider provideConvertToCamelCaseData

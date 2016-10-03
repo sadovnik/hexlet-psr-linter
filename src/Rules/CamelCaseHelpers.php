@@ -49,9 +49,12 @@ function convertToCamelCase($functionName)
 {
     $trimmedName = trim($functionName, '_');
     $explodedName = explode('_', $trimmedName);
-    $filteredPartials = array_filter($explodedName, function ($partial) {
-        return $partial !== '';
-    });
+    $filteredPartials = array_filter(
+        $explodedName,
+        function ($partial) {
+            return $partial !== '';
+        }
+    );
     $firstPart = array_shift($filteredPartials);
     $camelPart = array_reduce(
         $filteredPartials,

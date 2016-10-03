@@ -14,7 +14,7 @@
             "PsrLinter\\Tests\\": "tests/"
         },
         "files": [
-            "src/Rules/camelCase.php"
+            "src/Rules/CamelCaseHelpers.php"
         ]
     },
     "require": {
