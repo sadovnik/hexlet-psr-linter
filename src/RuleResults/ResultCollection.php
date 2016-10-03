@@ -20,6 +20,14 @@ class ResultCollection
     }
 
     /**
+     * @return array
+     */
+    public function getAll() : array
+    {
+        return $this->results;
+    }
+
+    /**
      * @return bool
      */
     public function isEmpty() : bool
