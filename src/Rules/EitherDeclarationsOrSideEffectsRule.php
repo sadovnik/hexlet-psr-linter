@@ -45,7 +45,10 @@ class EitherDeclarationsOrSideEffectsRule extends AbstractRule implements RuleIn
         }
     }
 
-    public function finally()
+    /**
+     * @inheritdoc
+     */
+    public function conclude()
     {
         if (!$this->hasSideEffects && !$this->hasDeclarations) {
             return $this->ok();

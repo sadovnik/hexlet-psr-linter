@@ -14,5 +14,5 @@ interface FilewideRuleInterface
     /**
      * This method will be called when the last node will be traversed.
      */
-    public function finally();
+    public function conclude();
 }
