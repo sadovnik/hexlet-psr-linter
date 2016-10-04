@@ -23,7 +23,7 @@ composer require sadovnik/hexlet-psr-linter
 ## Cli usage
 `psr-linter path/to/your.php`
 
-`psr-linter path/to/your.php`
+`psr-linter src/Symfony/Component/HttpKernel/Bundle/Bundle.php --fix`
 
 ## Roadmap
 - [x] Initiate boilerplate
