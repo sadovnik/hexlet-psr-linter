@@ -4,6 +4,7 @@ namespace PsrLinter;
 
 use PsrLinter\Checkers\CamelCaseChecker;
 use PsrLinter\RuleResults\ResultCollection;
+use PsrLinter\Rules\RuleCollection;
 
 use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
@@ -27,7 +28,7 @@ class Linter
     private $linterVisitor;
 
     /**
-     * @var AbstractRule[]
+     * @var RuleCollection
      */
     private $rules;
 
@@ -37,11 +38,11 @@ class Linter
     private $fixedAst = [];
 
     /**
-     * @param AbstractRule[] $rules
+     * @param RuleCollection $rules
      * @param bool           $fix
      * @param book           $debug
      */
-    public function __construct($rules = [], $fix = false, $debug = false)
+    public function __construct($rules, $fix = false, $debug = false)
     {
         $parserFactory = new ParserFactory;
         $this->parser = $parserFactory->create(ParserFactory::PREFER_PHP7);

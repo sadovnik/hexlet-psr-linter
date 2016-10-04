@@ -7,6 +7,7 @@ use PhpParser\NodeVisitorAbstract;
 
 use PsrLinter\Rules\FixableRuleInterface;
 use PsrLinter\Rules\FilewideRuleInterface;
+use PsrLinter\Rules\RuleCollection;
 
 use PsrLinter\RuleResults\WarningRuleResult;
 use PsrLinter\RuleResults\AbstractRuleResult;
@@ -43,9 +44,14 @@ class LinterVisitor extends NodeVisitorAbstract
     private $collection;
 
     /**
-     * @param array $rules
-     * @param bool  $fix   whether try to fix nodes or not
-     * @param bool  $debug whether collect verbose or not
+     * @var RuleCollection
+     */
+    private $rules;
+
+    /**
+     * @param RuleCollection $rules
+     * @param bool           $fix   whether try to fix nodes or not
+     * @param bool           $debug whether collect verbose or not
      */
     public function __construct($rules, $fix, $debug)
     {
@@ -53,34 +59,6 @@ class LinterVisitor extends NodeVisitorAbstract
         $this->debug = $debug;
         $this->rules = $rules;
         $this->collection = new ResultCollection;
-    }
-
-    /**
-     * @param Node $node
-     */
-    private function getRulesByNode(Node $node)
-    {
-        if ($this->nodeTypeToRulesMap === null) {
-            // TOFIX: rewrite in a declarative way
-            $this->nodeTypeToRulesMap = [];
-            foreach ($this->rules as $rule) {
-                $nodeTypes = $rule->getNodeTypes();
-                foreach ($nodeTypes as $nodeType) {
-                    if (!array_key_exists($nodeType, $this->nodeTypeToRulesMap)) {
-                        $this->nodeTypeToRulesMap[$nodeType] = [];
-                    }
-                    $this->nodeTypeToRulesMap[$nodeType] []= $rule;
-                }
-            }
-        }
-
-        foreach ($this->nodeTypeToRulesMap as $nodeType => $rules) {
-            if ($node instanceof $nodeType) {
-                return $rules;
-            }
-        }
-
-        return [];
     }
 
     /**
@@ -96,7 +74,7 @@ class LinterVisitor extends NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
-        foreach ($this->getRulesByNode($node) as $rule) {
+        foreach ($this->rules->getAssociatedRules($node) as $rule) {
             $result = $rule->verify($node);
 
             if (!($result instanceof AbstractRuleResult)) {
@@ -131,13 +109,7 @@ class LinterVisitor extends NodeVisitorAbstract
      */
     public function afterTraverse(array $nodes)
     {
-        $fileWideRules = array_filter(
-            $this->rules,
-            function ($rule) {
-                return $rule instanceof FilewideRuleInterface;
-            }
-        );
-
+        $fileWideRules = $this->rules->getFilewideRules();
         array_walk(
             $fileWideRules,
             function ($rule) {

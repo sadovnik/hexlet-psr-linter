@@ -5,7 +5,6 @@ namespace PsrLinter;
 use PsrLinter\Linter;
 use PsrLinter\Exceptions\ParseException;
 use PsrLinter\Reporter;
-use PsrLinter\Rules;
 use PsrLinter\RuleResults\AbstractFailRuleResult;
 use PsrLinter\RuleResults\WarningRuleResult;
 use PsrLinter\RuleResults\ErrorRuleResult;
@@ -14,6 +13,7 @@ use PsrLinter\RuleResults\FixedRuleResult;
 
 use PsrLinter\Rules\CamelCaseRule;
 use PsrLinter\Rules\EitherDeclarationsOrSideEffectsRule;
+use PsrLinter\Rules\RuleCollection;
 
 use PhpParser\Error;
 use PhpParser\NodeTraverser;
@@ -98,7 +98,8 @@ class CliApp
      */
     private function lintFile($file, $fix, $debug)
     {
-        $linter = new Linter(self::getCoreRules(), $fix, $debug);
+        $rules = new RuleCollection(self::getCoreRules());
+        $linter = new Linter($rules, $fix, $debug);
         $code = Fs::read($file);
 
         try {
