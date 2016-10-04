@@ -15,21 +15,24 @@ foreach ($autoloadPaths as $path) {
     }
 }
 
-use PsrLinter\Cli\App;
+use PsrLinter\CliApp;
+use PhpParser\Error;
 use Docopt;
 
 $doc = <<<DOC
 PSR linter.
 
 Usage:
-    psr-linter <path>
+    psr-linter [--fix] [--debug] <path>
     psr-linter (-h | --help)
     psr-linter --version
 
 Options:
     --fix    try to fix automatically
+    --debug  print verbose
 DOC;
 
-$args = Docopt::handle($doc, [ 'version' => 'PSR linter 0.1' ]);
-$app = new App($args);
-$app->run();
+$args = Docopt::handle($doc, [ 'version' => 'PSR linter WIP' ]);
+$app = new CliApp;
+$exitCode = $app->run($args);
+exit($exitCode);

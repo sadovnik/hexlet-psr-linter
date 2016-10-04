@@ -3,6 +3,9 @@
 namespace PsrLinter;
 
 use PsrLinter\Checkers\CamelCaseChecker;
+use PsrLinter\RuleResults\ResultCollection;
+use PsrLinter\Rules\RuleCollection;
+
 use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
 use PhpParser\PrettyPrinter;
@@ -24,34 +27,48 @@ class Linter
      */
     private $linterVisitor;
 
-    public function __construct()
+    /**
+     * @var RuleCollection
+     */
+    private $rules;
+
+    /**
+     * @var Node[]
+     */
+    private $fixedAst = [];
+
+    /**
+     * @param RuleCollection $rules
+     * @param bool           $fix
+     * @param book           $debug
+     */
+    public function __construct($rules, $fix = false, $debug = false)
     {
         $parserFactory = new ParserFactory;
         $this->parser = $parserFactory->create(ParserFactory::PREFER_PHP7);
         $this->traverser = new NodeTraverser;
-        $this->linterVisitor = new LinterVisitor(static::getCoreCheckers());
+        $this->linterVisitor = new LinterVisitor($rules, $fix, $debug);
         $this->traverser->addVisitor($this->linterVisitor);
     }
 
     /**
-     * Returns default checkers
-     * @return array
+     * @param string $code
+     * @param bool   $fix
+     *
+     * @return ResultCollection of linting errors
      */
-    protected static function getCoreCheckers() : array
+    public function lint(string $code) : ResultCollection
     {
-        return [
-            new CamelCaseChecker
-        ];
+        $ast = $this->parser->parse($code);
+        $this->fixedAst = $this->traverser->traverse($ast);
+        return $this->linterVisitor->getCollection();
     }
 
     /**
-     * @param string $code
-     * @return array list of linting errors
+     * @return string
      */
-    public function lint(string $code)
+    public function getFixedAst()
     {
-        $ast = $this->parser->parse($code);
-        $this->traverser->traverse($ast);
-        return $this->linterVisitor->getErrors();
+        return $this->fixedAst;
     }
 }

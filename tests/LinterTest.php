@@ -3,6 +3,10 @@
 namespace PsrLinter\Tests;
 
 use PsrLinter\Linter;
+use PsrLinter\CliApp;
+use PsrLinter\Rules\RuleCollection;
+use PsrLinter\RuleResults\WarningRuleResult;
+use PhpParser\Node\Stmt\Function_;
 
 class LinterTest extends BaseTestCase
 {
@@ -10,26 +14,29 @@ class LinterTest extends BaseTestCase
 
     public function setUp()
     {
-        $this->linter = new Linter;
+        $rules = new RuleCollection(CliApp::getCoreRules());
+        $this->linter = new Linter($rules);
     }
 
     public function testSuccess()
     {
         $code = self::getFixture('linter-test-success');
-        $this->assertEmpty($this->linter->lint($code));
+        $errorCollection = $this->linter->lint($code);
+        $this->assertTrue($errorCollection->isEmpty());
     }
 
     public function testFail()
     {
         $code = self::getFixture('linter-test-fail');
-        $expectedErrors = [
-            [
-                'line' => 3,
-                'title' => 'Wrong function name.',
-                'description' => 'Function names must be declared in camelCase.'
-            ]
-        ];
         $errors = $this->linter->lint($code);
-        $this->assertEquals($expectedErrors, $errors);
+        $count = 0;
+        $errors->traverse(function ($error) use (&$count) {
+            $this->assertInstanceOf(WarningRuleResult::class, $error);
+            $this->assertEquals('Wrong function name: make_some_stuff', $error->getTitle());
+            $this->assertEquals('Function names must be declared in camelCase.', $error->getDescription());
+            $this->assertEquals(3, $error->getNode()->getLine());
+            $count++;
+        });
+        $this->assertEquals($count, 1);
     }
 }
