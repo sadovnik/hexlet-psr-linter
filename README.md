@@ -4,28 +4,36 @@
 [![Test Coverage](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/badges/coverage.svg)](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/coverage)
 [![Issue Count](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/badges/issue_count.svg)](https://codeclimate.com/github/sadovnik/hexlet-psr-linter)
 
-A traineeship project for Hexlet.io
+A linter for PHP with aim to implement all possible [PSR](http://www.php-fig.org/psr/) rules.
+
+This project was originally started as part of [Hexlet](https://hexlet.io)'s traineeship, but actually developed a long time after. However the `hexlet-` prefix remains unchanged.
+
+Thanks to [Roman Lakhtadyr](https://github.com/pldin601) for review. 🙏🏻
 
 ## Installation
 You can install the package globally:
 ```
-composer global require "sadovnik/hexlet-psr-linter"
+composer global require sadovnik/hexlet-psr-linter
 ```
 or locally:
 ```
-composer require "sadovnik/hexlet-psr-linter"
+composer require sadovnik/hexlet-psr-linter
 ```
 
 ## Cli usage
 `psr-linter path/to/your.php`
 
+`psr-linter path/to/your.php`
+
 ## Roadmap
 - [x] Initiate boilerplate
-- [x] Function name checker
+- [x] Function name rule
 - [x] Directory support
-- [ ] Variable name checker
-- [ ] «Either side-effects or definitions» checker
-- [ ] Autofix using `--fix` flag
+- [ ] Variable name rule
+- [x] «Either side-effects or definitions» rule
+- [x] Autofix using `--fix` flag
 - [ ] JSON/YML output
-- [ ] User checkers
-- [ ] Website with online code checking
+- [ ] User rules
+- [ ] Make a useful explanation of rules here in readme
+- [ ] Make a friendly gif with cli usage
+- [ ] Website with online linter
