@@ -37,7 +37,7 @@ class BinaryTest extends TestCase
 
         exec($command, $output, $exitCode);
         $this->assertEquals(1, $exitCode);
-        $this->assertContains('Unable to parse the sourcecode.', $output[0]);
+        $this->assertContains('unable to parse', $output[1]);
     }
 
     public function testWithoutArguments()
