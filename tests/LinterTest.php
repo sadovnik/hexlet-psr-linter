@@ -20,14 +20,14 @@ class LinterTest extends BaseTestCase
 
     public function testSuccess()
     {
-        $code = self::getFixture('linter-test-success');
+        $code = self::getFixture('camel-case-ok');
         $errorCollection = $this->linter->lint($code);
         $this->assertTrue($errorCollection->isEmpty());
     }
 
     public function testFail()
     {
-        $code = self::getFixture('linter-test-fail');
+        $code = self::getFixture('camel-case-fail');
         $errors = $this->linter->lint($code);
         $count = 0;
         $errors->traverse(function ($error) use (&$count) {
