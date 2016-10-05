@@ -14,7 +14,17 @@ class EitherDeclarationsOrSideEffectsRule extends AbstractRule implements RuleIn
     /**
      * @var bool
      */
+    private $hasPossibleSideEffects = false;
+
+    /**
+     * @var bool
+     */
     private $hasDeclarations = false;
+
+    /**
+     * @var Node\Stmt\Class_|Node\Stmt\Function_|null
+     */
+    private $context = null;
 
     /**
      * @inheritdoc
@@ -32,16 +42,31 @@ class EitherDeclarationsOrSideEffectsRule extends AbstractRule implements RuleIn
      */
     public function verify(Node $node)
     {
-        $isStatement = $node instanceof Node\Stmt;
-        $isEchoStatement = $node instanceof Node\Stmt\Echo_;
-        $isExpression = $node instanceof Node\Expr;
-
-        if ($isStatement && !$isEchoStatement) {
-            $this->hasDeclarations |= true;
+        if ($node instanceof Node\Stmt\Class_
+            || $node instanceof Node\Stmt\Function_
+            || $node instanceof Node\Stmt\Trait_
+            || $node instanceof Node\Expr\Closure
+        ) {
+            $this->hasDeclarations = true;
+            $this->hasPossibleSideEffects = false;
+            return;
         }
 
-        if ($isEchoStatement || $isEchoStatement) {
-            $this->hasSideEffects |= true;
+        if ($node instanceof Node\Stmt) {
+            if ($node instanceof Node\Stmt\Echo_) {
+                $this->hasSideEffects = true;
+            } else {
+                $this->hasDeclarations = true;
+            }
+        } else {
+            if ($node instanceof Node\Expr\Eval_
+                || $node instanceof Node\Expr\Exit_
+                || $node instanceof Node\Expr\Include_
+            ) {
+                $this->hasSideEffects = true;
+            } else {
+                $this->hasPossibleSideEffects = true;
+            }
         }
     }
 
@@ -50,11 +75,11 @@ class EitherDeclarationsOrSideEffectsRule extends AbstractRule implements RuleIn
      */
     public function conclude()
     {
-        if (!$this->hasSideEffects && !$this->hasDeclarations) {
+        if (!$this->hasSideEffects && !$this->hasPossibleSideEffects && !$this->hasDeclarations) {
             return $this->ok();
         }
 
-        return $this->hasSideEffects ^ $this->hasDeclarations
+        return ($this->hasSideEffects || $this->hasPossibleSideEffects) ^ $this->hasDeclarations
             ? $this->ok()
             : $this->error(
                 'Side effects and declarations are mixed.',
