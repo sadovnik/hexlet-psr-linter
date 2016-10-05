@@ -1,8 +1,11 @@
 <?php
 
+namespace Qux;
+
 DEFINE('BAR', 'BAZ');
 
-class Foo {
+class Foo
+{
     public function bar()
     {
     }
