@@ -36,11 +36,14 @@ class CliApp
     private $printer = null;
 
     /**
-     * @param array $args
+     * @return CLImate
      */
-    public function __construct()
+    protected function getCLi()
     {
-        $this->cli = new CLImate;
+        if ($this->cli === null) {
+            $this->cli = new CLImate;
+        }
+        return $this->cli;
     }
 
     /**
@@ -81,9 +84,9 @@ class CliApp
             : $this->lintFile($path, $fix, $debug);
 
         if ($hasErrors) {
-            $this->cli->yellow('🐛 Found some errors.');
+            $this->getCli()->yellow('🐛 Found some errors.');
         } else {
-            $this->cli->green('👍 Code is valid!');
+            $this->getCli()->green('👍 Code is valid!');
         }
 
         return (int) $hasErrors;
@@ -113,7 +116,7 @@ class CliApp
             return false;
         }
 
-        $this->cli->gray($file);
+        $this->getCli()->gray($file);
 
         $resultCollection->traverse(function ($result) {
             $this->printResult($result);
@@ -170,15 +173,15 @@ class CliApp
         $line = sprintf('%6s', $lineCount);
 
         if ($result instanceof AbstractFailRuleResult) {
-            $this->cli->inline($line . ' ');
+            $this->getCli()->inline($line . ' ');
 
             if ($result instanceof WarningRuleResult) {
-                $this->cli->yellow()->inline('warning')->white();
+                $this->getCli()->yellow()->inline('warning')->white();
             } else {
-                $this->cli->red()->inline('error')->white();
+                $this->getCli()->red()->inline('error')->white();
             }
 
-            $this->cli
+            $this->getCli()
                 ->inline(' ')
                 ->inline($result->getTitle())
                 ->inline('    ')
@@ -187,7 +190,7 @@ class CliApp
         }
 
         if ($result instanceof FixedRuleResult) {
-            $this->cli
+            $this->getCli()
                 ->inline($line . ' ')->green()
                 ->inline('fixed')->white()
                 ->inline(' ' . $result->getBeforeFix() . ' → ' . $result->getAfterFix())
@@ -195,7 +198,7 @@ class CliApp
         }
 
         if ($result instanceof OkRuleResult) {
-            $this->cli
+            $this->getCli()
                 ->gray()->inline('ok: ')->white($result->getRule())
                 ->br();
         }
@@ -207,7 +210,7 @@ class CliApp
      */
     public function printUnableToParseMessage($file, $message)
     {
-        $this->cli
+        $this->getCli()
             ->out($file)
             ->inline('       ')->red()
             ->inline('unable to parse ')->white()
