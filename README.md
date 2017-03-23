@@ -4,7 +4,7 @@
 [![Test Coverage](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/badges/coverage.svg)](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/coverage)
 [![Issue Count](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/badges/issue_count.svg)](https://codeclimate.com/github/sadovnik/hexlet-psr-linter)
 
-A linter for PHP with aim to implement all possible [PSR](http://www.php-fig.org/psr/) rules.
+This is a linter for PHP with aim to implement all possible [PSR](http://www.php-fig.org/psr/) rules.
 
 This project was originally started as part of [Hexlet](https://hexlet.io)'s traineeship, but actually developed a long time after. However the `hexlet-` prefix remains unchanged.
 
@@ -12,18 +12,22 @@ Thanks to [Roman Lakhtadyr](https://github.com/pldin601) for review. 🙏🏻
 
 ## Installation
 You can install the package globally:
-```
-composer global require sadovnik/hexlet-psr-linter
-```
+
+    composer global require sadovnik/hexlet-psr-linter
+
 or locally:
-```
-composer require sadovnik/hexlet-psr-linter
-```
 
-## Cli usage
-`psr-linter path/to/your.php`
+    composer require sadovnik/hexlet-psr-linter
 
-`psr-linter src/Symfony/Component/HttpKernel/Bundle/Bundle.php --fix`
+## Usage
+
+    psr-linter [--fix] [--debug] <path>
+    psr-linter (-h | --help)
+    psr-linter --version
+
+### Example
+
+    psr-linter src/Symfony/Component/HttpKernel/Bundle/Bundle.php --fix
 
 ## Roadmap
 - [x] Initiate boilerplate
@@ -33,7 +37,7 @@ composer require sadovnik/hexlet-psr-linter
 - [x] «Either side-effects or definitions» rule
 - [x] Autofix using `--fix` flag
 - [ ] JSON/YML output
-- [ ] User rules
+- [ ] Make an interface for user rules
 - [ ] Make a useful explanation of rules here in readme
-- [ ] Make a friendly gif with cli usage
+- [ ] Make a friendly demo with cli usage
 - [ ] Website with online linter
