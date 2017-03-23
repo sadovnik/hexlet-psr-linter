@@ -19,6 +19,8 @@ or locally:
 
     composer require sadovnik/hexlet-psr-linter
 
+If you're having trouble to run `psr-linter` after global install, make sure Composer's global binary dir is in the `$PATH`.
+
 ## Usage
 
     psr-linter [--fix] [--debug] <path>
