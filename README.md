@@ -4,6 +4,8 @@
 [![Test Coverage](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/badges/coverage.svg)](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/coverage)
 [![Issue Count](https://codeclimate.com/github/sadovnik/hexlet-psr-linter/badges/issue_count.svg)](https://codeclimate.com/github/sadovnik/hexlet-psr-linter)
 
+![hexlet-psr-linter screenshot](https://www.dropbox.com/s/jf9tfc1pv413w4f/Screen%20Shot%202017-03-23%20at%2020.00.19.png?dl=1)
+
 This is a linter for PHP with aim to implement all possible [PSR](http://www.php-fig.org/psr/) rules.
 
 This project was originally started as part of [Hexlet](https://hexlet.io)'s traineeship, but actually developed a long time after. However the `hexlet-` prefix remains unchanged.
